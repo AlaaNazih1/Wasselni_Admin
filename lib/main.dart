@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:wasselni_admin/core/theme/app_theme.dart';
+
+import 'core/theme/app_theme.dart';
+import 'features/dashboard/presentation/views/admin_dashboard_layout.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const WasselniAdminApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class WasselniAdminApp extends StatelessWidget {
+  const WasselniAdminApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wasselni Admin',
-     theme: AppTheme.light,
-     
+      theme: AppTheme.light,
+      home: const AdminDashboardLayout(),
     );
   }
 }
-
