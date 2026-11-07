@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "711692412352",
+    "project_id": "todo-14f2e",
+    "storage_bucket": "todo-14f2e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711692412352:android:b8b20e28b8f7a84db25425",
+        "android_client_info": {
+          "package_name": "com.example.wasselni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpyNpxVTv86qYE_JezYTzyhvD5N1NnKHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711692412352:android:b70138e1bed4d576b25425",
+        "android_client_info": {
+          "package_name": "com.example.wasselni_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpyNpxVTv86qYE_JezYTzyhvD5N1NnKHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711692412352:android:db789c65fe6969a9b25425",
+        "android_client_info": {
+          "package_name": "com.wasselni.wasselni_driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpyNpxVTv86qYE_JezYTzyhvD5N1NnKHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

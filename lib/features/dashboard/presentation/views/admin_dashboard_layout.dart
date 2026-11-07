@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard_stats_section.dart';
+import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/admin_sidebar.dart';
@@ -73,14 +75,33 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
                 ),
 
                 Expanded(
-                  child: Center(
-                    child: Text(
-                      _pageTitles[_selectedIndex],
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.black,
-                      ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'نظرة عامة على Wasselni',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.black,
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        const Text(
+                          'تابع أداء المنصة وإدارة عمليات التوصيل.',
+                          style: TextStyle(fontSize: 14, color: AppColors.grey),
+                        ),
+
+                        const SizedBox(height: 28),
+
+                        const DashboardStatsSection(),
+                        const SizedBox(height: 30),
+                        const RecentOrdersTable(),
+                      ],
                     ),
                   ),
                 ),
