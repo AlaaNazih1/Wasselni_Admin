@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wasselni_admin/features/orders/presentation/controllers/admin_orders_controller.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
-class RecentOrdersTable extends StatelessWidget {
+class RecentOrdersTable extends ConsumerWidget {
   const RecentOrdersTable({super.key});
 
   static const List<Map<String, String>> _orders = [
@@ -44,79 +46,20 @@ class RecentOrdersTable extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'أحدث الطلبات',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
-            ),
-          ),
-          const SizedBox(height: 20),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ordersAsync = ref.watch(adminOrdersProvider);
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              headingRowColor: WidgetStateProperty.all(AppColors.background),
-              columns: const [
-                DataColumn(label: Text('رقم الطلب')),
-                DataColumn(label: Text('العميل')),
-                DataColumn(label: Text('المندوب')),
-                DataColumn(label: Text('القيمة')),
-                DataColumn(label: Text('الحالة')),
-                DataColumn(label: Text('التاريخ')),
-              ],
-              rows: _orders.map((order) {
-                final status = order['status']!;
+    return ordersAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) {
 
-                return DataRow(
-                  cells: [
-                    DataCell(Text(order['id']!)),
-                    DataCell(Text(order['customer']!)),
-                    DataCell(Text(order['driver']!)),
-                    DataCell(Text(order['price']!)),
-                    DataCell(
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _getStatusColor(
-                            status,
-                          ).withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          status,
-                          style: TextStyle(
-                            color: _getStatusColor(status),
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DataCell(Text(order['date']!)),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
+        debugPrint('Error loading orders: $error\n$stackTrace');
+        return const Center(child: Text('حدث خطأ أثناء تحميل الطلبات'));
+      },
+      data: (orders) {
+        // هنضع هنا تصميم الجدول في الخطوة التالية.
+        return Text('عدد الطلبات: ${orders.length}');
+      },
     );
   }
 }
