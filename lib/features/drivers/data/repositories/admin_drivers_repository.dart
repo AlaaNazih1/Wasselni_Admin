@@ -27,4 +27,19 @@ class AdminDriversRepository {
       return drivers;
     });
   }
+
+  Future<List<Map<String, dynamic>>> getDriverOrders(String driverId) async {
+    final snapshot = await _firestore
+        .collectionGroup('orders')
+        .where('driverId', isEqualTo: driverId)
+        .get();
+
+    return snapshot.docs.map((document) {
+      return {
+        ...document.data(),
+        'orderId': document.id,
+        'customerId': document.reference.parent.parent?.id,
+      };
+    }).toList();
+  }
 }

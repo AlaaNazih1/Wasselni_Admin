@@ -11,3 +11,12 @@ final adminDriversProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
 
   return repository.watchAllDrivers();
 });
+final driverOrdersProvider =
+    FutureProvider.family<List<Map<String, dynamic>>, String>((
+      ref,
+      driverId,
+    ) async {
+      final repository = ref.watch(adminDriversRepositoryProvider);
+
+      return repository.getDriverOrders(driverId);
+    });

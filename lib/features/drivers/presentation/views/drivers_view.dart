@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wasselni_admin/features/drivers/presentation/views/driver_details_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../controllers/admin_drivers_controller.dart';
@@ -447,41 +448,81 @@ class _DriversViewState extends ConsumerState<DriversView> {
                                             return DataRow(
                                               cells: [
                                                 DataCell(
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 18,
-                                                        backgroundColor:
-                                                            AppColors.primary
-                                                                .withValues(
-                                                                  alpha: 0.15,
-                                                                ),
-                                                        child: Text(
-                                                          name.isNotEmpty
-                                                              ? name[0]
-                                                                    .toUpperCase()
-                                                              : '?',
-                                                          style:
-                                                              const TextStyle(
+                                                  InkWell(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DriverDetailsView(
+                                                                driver: driver,
+                                                              ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            vertical: 6,
+                                                          ),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 18,
+                                                            backgroundColor:
+                                                                AppColors
+                                                                    .primary
+                                                                    .withValues(
+                                                                      alpha:
+                                                                          0.15,
+                                                                    ),
+                                                            child: Text(
+                                                              name.isNotEmpty
+                                                                  ? name[0]
+                                                                        .toUpperCase()
+                                                                  : '?',
+                                                              style: const TextStyle(
                                                                 color: AppColors
                                                                     .black,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
                                                               ),
-                                                        ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            name,
+                                                            style:
+                                                                const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color:
+                                                                      AppColors
+                                                                          .blue,
+                                                                ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          const Icon(
+                                                            Icons.open_in_new,
+                                                            size: 14,
+                                                            color:
+                                                                AppColors.grey,
+                                                          ),
+                                                        ],
                                                       ),
-                                                      const SizedBox(width: 10),
-                                                      Text(
-                                                        name,
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
                                                 DataCell(Text(phone)),
