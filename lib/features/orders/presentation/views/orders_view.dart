@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wasselni_admin/features/orders/presentation/views/order_details_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../controllers/admin_orders_controller.dart';
@@ -254,10 +255,26 @@ class _OrdersViewState extends ConsumerState<OrdersView> {
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text(
-                                        order['orderNumber']?.toString() ??
-                                            order['orderId']?.toString() ??
-                                            '-',
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OrderDetailsView(
+                                                    order: order,
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          order['orderNumber']?.toString() ??
+                                              '-',
+                                          style: const TextStyle(
+                                            color: AppColors.blue,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     DataCell(

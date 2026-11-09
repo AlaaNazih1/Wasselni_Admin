@@ -7,11 +7,13 @@ import 'core/theme/app_theme.dart';
 import 'features/dashboard/presentation/views/admin_dashboard_layout.dart';
 
 void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const ProviderScope(child: WasselniAdminApp()));
+  
 }
 
 class WasselniAdminApp extends StatelessWidget {
@@ -23,6 +25,15 @@ class WasselniAdminApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Wasselni Admin',
       theme: AppTheme.light,
+      builder: (context, child) {
+        return DefaultTextStyle(
+          style: const TextStyle(
+            decoration: TextDecoration.none,
+            decorationColor: Colors.transparent,
+          ),
+          child: child!,
+        );
+      },
       home: const AdminDashboardLayout(),
     );
   }
