@@ -73,7 +73,11 @@ Widget build(BuildContext context, WidgetRef ref) {
             value: completed.when(
               data: (value) => value.toString(),
               loading: () => '...',
-              error: (_, __) => 'خطأ',
+              error: (error, stackTrace) {
+                  debugPrint('Completed Orders Error: $error');
+                  debugPrintStack(stackTrace: stackTrace);
+                  return 'خطأ';
+                },
             ),
             icon: Icons.check_circle_rounded,
             iconColor: AppColors.success,
