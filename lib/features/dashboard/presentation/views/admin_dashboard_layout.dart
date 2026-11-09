@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard_stats_section.dart';
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
+import 'package:wasselni_admin/features/orders/presentation/views/orders_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/admin_sidebar.dart';
@@ -24,6 +26,24 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
     'الأسعار والمناطق',
   ];
 
+  Widget _getSelectedPage() {
+    switch (_selectedIndex) {
+      case 0:
+        return const _DashboardHomeView();
+
+      case 1:
+        return const OrdersView();
+
+      default:
+        return Center(
+          child: Text(
+            'صفحة ${_pageTitles[_selectedIndex]} قريباً',
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +62,7 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
           Expanded(
             child: Column(
               children: [
+                // Top Bar
                 Container(
                   height: 75,
                   padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -59,13 +80,9 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
                           color: AppColors.black,
                         ),
                       ),
-
                       const Spacer(),
-
                       const Icon(Icons.notifications_none_rounded, size: 25),
-
                       const SizedBox(width: 20),
-
                       const CircleAvatar(
                         backgroundColor: AppColors.primary,
                         child: Icon(Icons.person, color: AppColors.black),
@@ -74,40 +91,44 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
                   ),
                 ),
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'نظرة عامة على Wasselni',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black,
-                          ),
-                        ),
-
-                        const SizedBox(height: 8),
-
-                        const Text(
-                          'تابع أداء المنصة وإدارة عمليات التوصيل.',
-                          style: TextStyle(fontSize: 14, color: AppColors.grey),
-                        ),
-
-                        const SizedBox(height: 28),
-
-                        const DashboardStatsSection(),
-                        const SizedBox(height: 30),
-                        const RecentOrdersTable(),
-                      ],
-                    ),
-                  ),
-                ),
+                // Page Content
+                Expanded(child: _getSelectedPage()),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DashboardHomeView extends StatelessWidget {
+  const _DashboardHomeView();
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'نظرة عامة على Wasselni',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.black,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'تابع أداء المنصة وإدارة عمليات التوصيل.',
+            style: TextStyle(fontSize: 14, color: AppColors.grey),
+          ),
+          SizedBox(height: 28),
+          DashboardStatsSection(),
+          SizedBox(height: 30),
+          RecentOrdersTable(),
         ],
       ),
     );
