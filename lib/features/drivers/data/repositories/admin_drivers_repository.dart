@@ -1,0 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class AdminDriversRepository {
+  final FirebaseFirestore _firestore;
+
+  AdminDriversRepository({FirebaseFirestore? firestore})
+    : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  Stream<List<Map<String, dynamic>>> watchAllDrivers() {
+    return _firestore.collection('drivers').snapshots().map((snapshot) {
+      final drivers = snapshot.docs.map((document) {
+        return {...document.data(), 'driverId': document.id};
+      }).toList();
+
+      // ترتيب المندوبين بالأحدث أولاً.
+      drivers.sort((a, b) {
+        final dateA = a['createdAt'];
+        final dateB = b['createdAt'];
+
+        if (dateA is! Timestamp || dateB is! Timestamp) {
+          return 0;
+        }
+
+        return dateB.compareTo(dateA);
+      });
+
+      return drivers;
+    });
+  }
+}

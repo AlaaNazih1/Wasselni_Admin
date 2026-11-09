@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard_stats_section.dart';
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
+import 'package:wasselni_admin/features/drivers/presentation/views/drivers_view.dart';
 import 'package:wasselni_admin/features/orders/presentation/views/orders_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -33,6 +34,8 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
 
       case 1:
         return const OrdersView();
+      case 2:
+        return const DriversView();
 
       default:
         return Center(

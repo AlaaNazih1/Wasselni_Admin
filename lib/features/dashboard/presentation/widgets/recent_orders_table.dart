@@ -132,6 +132,11 @@ class RecentOrdersTable extends ConsumerWidget {
                     headingRowColor: WidgetStateProperty.all(
                       AppColors.background,
                     ),
+                    columnSpacing: 28,
+                    horizontalMargin: 20,
+                    dataRowMinHeight: 65,
+                    dataRowMaxHeight: 75,
+                    headingRowHeight: 55,
                     columns: const [
                       DataColumn(label: Text('رقم الطلب')),
                       DataColumn(label: Text('العميل')),
