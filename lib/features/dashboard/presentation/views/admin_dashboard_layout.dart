@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wasselni_admin/features/customers/presentation/views/customers_view.dart';
 
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard_stats_section.dart';
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
@@ -36,7 +37,8 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
         return const OrdersView();
       case 2:
         return const DriversView();
-
+      case 3:
+        return const CustomersView();
       default:
         return Center(
           child: Text(
