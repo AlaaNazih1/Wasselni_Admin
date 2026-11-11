@@ -30,7 +30,7 @@ class _AdminLoginViewState extends ConsumerState<AdminLoginView> {
       _errorMessage = null;
     });
 
-   try {
+    try {
       final repository = ref.read(adminAuthRepositoryProvider);
 
       await repository.signIn(
@@ -51,8 +51,6 @@ class _AdminLoginViewState extends ConsumerState<AdminLoginView> {
 
         return;
       }
-
-    
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = switch (e.code) {
@@ -109,10 +107,10 @@ class _AdminLoginViewState extends ConsumerState<AdminLoginView> {
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    child: const Icon(
-                      Icons.delivery_dining,
-                      size: 38,
-                      color: AppColors.black,
+                    child: Image.asset(
+                      'assets/wasselni_logo-removebg-preview.png',
+                      width: 40,
+                      height: 40,
                     ),
                   ),
 
