@@ -42,4 +42,26 @@ class AdminDriversRepository {
       };
     }).toList();
   }
+
+  Future<void> approveDriver(String driverId) async {
+    await _firestore.collection('drivers').doc(driverId).update({
+      'isApproved': true,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> activateDriver(String driverId) async {
+    await _firestore.collection('drivers').doc(driverId).update({
+      'isActive': true,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<void> deactivateDriver(String driverId) async {
+    await _firestore.collection('drivers').doc(driverId).update({
+      'isActive': false,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
 }

@@ -42,6 +42,117 @@ class _DriversViewState extends ConsumerState<DriversView> {
     return isActive ? 'نشط' : 'غير نشط';
   }
 
+  Future<void> _showDriverActionDialog({
+    required BuildContext context,
+    required String driverName,
+    required String driverId,
+    required String action,
+  }) async {
+    String title;
+    String message;
+    String confirmText;
+    IconData icon;
+    Color color;
+
+    switch (action) {
+      case 'approve':
+        title = 'الموافقة على المندوب';
+        message = 'هل أنت متأكد من الموافقة على حساب $driverName؟';
+        confirmText = 'موافقة';
+        icon = Icons.verified_outlined;
+        color = Colors.green;
+        break;
+
+      case 'activate':
+        title = 'تفعيل حساب المندوب';
+        message = 'هل تريد تفعيل حساب $driverName؟';
+        confirmText = 'تفعيل';
+        icon = Icons.play_arrow;
+        color = Colors.blue;
+        break;
+
+      default:
+        title = 'تعطيل حساب المندوب';
+        message = 'هل تريد تعطيل حساب $driverName؟';
+        confirmText = 'تعطيل';
+        icon = Icons.block;
+        color = Colors.red;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          icon: Icon(icon, color: color, size: 36),
+          title: Text(title, textAlign: TextAlign.center),
+          content: Text(message, textAlign: TextAlign.center),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('إلغاء'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color,
+                foregroundColor: AppColors.white,
+              ),
+              onPressed: () async {
+                Navigator.pop(dialogContext);
+
+                try {
+                  final actions = ref.read(driverActionsProvider);
+
+                  switch (action) {
+                    case 'approve':
+                      await actions.approveDriver(driverId);
+                      break;
+
+                    case 'activate':
+                      await actions.activateDriver(driverId);
+                      break;
+
+                    case 'deactivate':
+                      await actions.deactivateDriver(driverId);
+                      break;
+                  }
+
+                  if (!mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        action == 'approve'
+                            ? 'تمت الموافقة على المندوب بنجاح'
+                            : action == 'activate'
+                            ? 'تم تفعيل حساب المندوب بنجاح'
+                            : 'تم تعطيل حساب المندوب بنجاح',
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } catch (e) {
+                  if (!mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('حدث خطأ أثناء تنفيذ العملية: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              child: Text(confirmText),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildStatusBadge({required String label, required Color color}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
@@ -419,6 +530,9 @@ class _DriversViewState extends ConsumerState<DriversView> {
                                             DataColumn(
                                               label: Text('تاريخ التسجيل'),
                                             ),
+                                            DataColumn(
+                                              label: Text('الإجراءات'),
+                                            ),
                                           ],
 
                                           rows: filteredDrivers.map((driver) {
@@ -547,6 +661,53 @@ class _DriversViewState extends ConsumerState<DriversView> {
                                                   ),
                                                 ),
                                                 DataCell(Text(formattedDate)),
+
+                                                DataCell(
+                                                  Tooltip(
+                                                    message:
+                                                        "${!isApproved
+                                                            ? 'موافقة'
+                                                            : isActive
+                                                            ? 'تعطيل'
+                                                            : 'تفعيل'} حساب المندوب",
+                                                    child: OutlinedButton.icon(
+                                                      onPressed: () {
+                                                        final action =
+                                                            !isApproved
+                                                            ? 'approve'
+                                                            : isActive
+                                                            ? 'deactivate'
+                                                            : 'activate';
+
+                                                        _showDriverActionDialog(
+                                                          context: context,
+                                                          driverName: name,
+                                                          driverId:
+                                                              driver['driverId']
+                                                                  ?.toString() ??
+                                                              '',
+                                                          action: action,
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        !isApproved
+                                                            ? Icons
+                                                                  .verified_outlined
+                                                            : isActive
+                                                            ? Icons.block
+                                                            : Icons.play_arrow,
+                                                        size: 16,
+                                                      ),
+                                                      label: Text(
+                                                        !isApproved
+                                                            ? 'موافقة'
+                                                            : isActive
+                                                            ? 'تعطيل'
+                                                            : 'تفعيل',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             );
                                           }).toList(),
