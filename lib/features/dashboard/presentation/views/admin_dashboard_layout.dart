@@ -5,6 +5,7 @@ import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
 import 'package:wasselni_admin/features/drivers/presentation/views/drivers_view.dart';
 import 'package:wasselni_admin/features/orders/presentation/views/orders_view.dart';
+import 'package:wasselni_admin/features/reports/presentation/views/reports_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/admin_sidebar.dart';
@@ -39,6 +40,8 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
         return const DriversView();
       case 3:
         return const CustomersView();
+      case 4:
+        return const ReportsView();
       default:
         return Center(
           child: Text(
