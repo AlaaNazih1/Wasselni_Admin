@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wasselni_admin/features/auth/presentation/controllers/admin_auth_controller.dart';
 import '../theme/app_colors.dart';
 
-class AdminSidebar extends StatelessWidget {
+class AdminSidebar extends ConsumerWidget {
   final int selectedIndex;
   final ValueChanged<int> onItemSelected;
 
@@ -21,7 +23,7 @@ class AdminSidebar extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: 250,
       color: AppColors.white,
@@ -131,13 +133,67 @@ class AdminSidebar extends StatelessWidget {
                   ),
                 ),
 
-                IconButton(
-                  onPressed: () {},
+                
+IconButton(
+                  tooltip: 'تسجيل الخروج',
+                  onPressed: () async {
+                    final shouldLogout = await showDialog<bool>(
+                      context: context,
+                      builder: (dialogContext) => AlertDialog(
+                        backgroundColor: AppColors.cardBackground,
+                        title: const Text(
+                          'تسجيل الخروج',
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        content: const Text(
+                          'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+                          style: TextStyle(color: AppColors.grey),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () =>
+                                Navigator.pop(dialogContext, false),
+                            child: const Text(
+                              'إلغاء',
+                              style: TextStyle(color: AppColors.grey),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(dialogContext, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.error,
+                              foregroundColor: AppColors.white,
+                            ),
+                            child: const Text('تسجيل الخروج'),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (shouldLogout != true) return;
+
+                    try {
+                      await ref.read(adminAuthActionsProvider).signOut();
+                    } catch (error) {
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('تعذر تسجيل الخروج: $error'),
+                          backgroundColor: AppColors.error,
+                        ),
+                      );
+                    }
+                  },
                   icon: const Icon(
                     Icons.logout_rounded,
                     color: AppColors.error,
                   ),
                 ),
+
               ],
             ),
           ),
