@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wasselni_admin/features/pricing/data/models/pricing_settings_model.dart';
 
 import '../models/service_area_model.dart';
 
@@ -51,5 +52,28 @@ class PricingRepository {
   // Delete service area
   Future<void> deleteServiceArea(String areaId) async {
     await _areasCollection.doc(areaId).delete();
+  }
+  DocumentReference<Map<String, dynamic>> get _pricingSettingsDocument =>
+      _firestore.collection('settings').doc('pricing');
+
+  Stream<PricingSettings> watchPricingSettings() {
+    return _pricingSettingsDocument.snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        return const PricingSettings(
+          basePrice: 0,
+          pricePerKm: 0,
+          minimumDeliveryPrice: 0,
+        );
+      }
+
+      return PricingSettings.fromMap(snapshot.data()!);
+    });
+  }
+
+  Future<void> updatePricingSettings(PricingSettings settings) async {
+    await _pricingSettingsDocument.set({
+      ...settings.toMap(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
   }
 }
