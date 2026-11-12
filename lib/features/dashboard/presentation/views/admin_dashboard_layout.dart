@@ -5,6 +5,7 @@ import 'package:wasselni_admin/features/dashboard/presentation/widgets/dashboard
 import 'package:wasselni_admin/features/dashboard/presentation/widgets/recent_orders_table.dart';
 import 'package:wasselni_admin/features/drivers/presentation/views/drivers_view.dart';
 import 'package:wasselni_admin/features/orders/presentation/views/orders_view.dart';
+import 'package:wasselni_admin/features/pricing/presentation/views/pricing_areas_view.dart';
 import 'package:wasselni_admin/features/reports/presentation/views/reports_view.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -42,13 +43,9 @@ class _AdminDashboardLayoutState extends State<AdminDashboardLayout> {
         return const CustomersView();
       case 4:
         return const ReportsView();
+
       default:
-        return Center(
-          child: Text(
-            'صفحة ${_pageTitles[_selectedIndex]} قريباً',
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-        );
+        return const PricingAreasView();
     }
   }
 
